@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Île Maurice — Juin 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:    #0D1B2A;
+    --sand:   #F5EFE0;
+    --ocean:  #1A7FA6;
+    --coral:  #E8593A;
+    --gold:   #C9963B;
+    --mist:   #E8EFF4;
+    --muted:  #7A7060;
+    --light:  #FAF7F2;
+    --white:  #FFFFFF;
+    --green:  #2E7D5B;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--light);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .cover-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1589197331516-4d84b72ebde3?w=1600&q=80');
+    background-size: cover;
+    background-position: center 30%;
+    transform: scale(1.04);
+    transition: transform 8s ease;
+  }
+  .cover-bg.loaded { transform: scale(1); }
+
+  .cover-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.35) 55%, transparent 100%);
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    padding: 48px 56px;
+    max-width: 900px;
+  }
+
+  .cover-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 16px;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(60px, 10vw, 108px);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .cover-title em {
+    font-style: italic;
+    color: var(--sand);
+    display: block;
+    font-size: 0.55em;
+    font-weight: 400;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+  }
+
+  .cover-meta-item {
+    color: rgba(255,255,255,0.65);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .cover-meta-item strong {
+    display: block;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+    margin-bottom: 2px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    right: 56px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
+    animation: scrollpulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollpulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+  /* ── LAYOUT ── */
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── CHECKLIST ── */
+  .checklist-section {
+    background: var(--ink);
+    padding: 64px 0;
+  }
+
+  .checklist-section .wrap { }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 40px;
+    line-height: 1.15;
+  }
+
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 48px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .check-item.must { color: var(--white); }
+
+  .check-box {
+    width: 20px; height: 20px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .check-item.must .check-box {
+    background: var(--coral);
+    border-color: var(--coral);
+  }
+
+  .check-box svg { display: none; }
+  .check-item.must .check-box svg { display: block; }
+
+  /* ── INFO STRIP ── */
+  .info-strip {
+    background: var(--sand);
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(13,27,42,0.08);
+  }
+
+  .info-strip .wrap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(13,27,42,0.1);
+  }
+
+  .info-cell {
+    background: var(--sand);
+    padding: 20px 24px;
+  }
+
+  .info-cell-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+
+  .info-cell-val {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  /* ── WEEK HEADER ── */
+  .week-header {
+    padding: 56px 0 0;
+  }
+
+  .week-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .week-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--sand);
+    -webkit-text-stroke: 2px var(--ink);
+    letter-spacing: -0.03em;
+  }
+
+  .week-info { }
+  .week-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 4px;
+  }
+
+  .week-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ── DAY CARDS ── */
+  .days-list { padding: 24px 0 0; }
+
+  .day-card {
+    margin-bottom: 16px;
+    border: 1px solid rgba(13,27,42,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--white);
+    transition: box-shadow 0.2s;
+  }
+  .day-card:hover { box-shadow: 0 4px 24px rgba(13,27,42,0.08); }
+
+  .day-header {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+
+  .day-num-block {
+    background: var(--coral);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    min-height: 64px;
+  }
+
+  .day-num-block span {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--white);
+  }
+
+  .day-header-info {
+    padding: 14px 18px;
+  }
+
+  .day-date {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .day-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .day-badge-chevron {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 18px;
+  }
+
+  .badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .badge-chill          { background: #E1F5EE; color: #0F6E56; }
+  .badge-charge         { background: #FEF3E2; color: #885010; }
+  .badge-incontournable { background: var(--coral); color: var(--white); }
+
+  .chevron {
+    width: 16px; height: 16px;
+    color: var(--muted);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .day-card.open .chevron { transform: rotate(180deg); }
+
+  /* ── DAY BODY ── */
+  .day-body { display: none; }
+  .day-card.open .day-body { display: block; }
+
+  .day-photo {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    background: var(--mist);
+  }
+
+  .day-photo-placeholder {
+    width: 100%;
+    height: 200px;
+    background: var(--mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .activities {
+    padding: 0 0 4px;
+  }
+
+  .activity {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 16px;
+    padding: 11px 18px;
+    border-bottom: 1px solid rgba(13,27,42,0.06);
+    align-items: start;
+  }
+  .activity:last-child { border-bottom: none; }
+
+  .act-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    padding-top: 1px;
+    letter-spacing: 0.02em;
+  }
+
+  .act-desc {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .act-desc strong {
+    font-weight: 600;
+  }
+
+  .day-tip {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 0 18px 14px;
+    padding: 10px 12px;
+    background: rgba(46,125,91,0.07);
+    border-left: 2.5px solid var(--green);
+    font-size: 12px;
+    color: var(--green);
+    line-height: 1.5;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── PHOTO MOSAIC between weeks ── */
+  .mosaic {
+    padding: 48px 0;
+  }
+
+  .mosaic-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 180px 180px;
+    gap: 4px;
+  }
+
+  .mosaic-img {
+    overflow: hidden;
+    background: var(--mist);
+  }
+
+  .mosaic-img:first-child {
+    grid-row: 1 / 3;
+  }
+
+  .mosaic-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .mosaic-img:hover img { transform: scale(1.04); }
+
+  .mosaic-caption {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: right;
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--ink);
+    padding: 48px 0;
+    margin-top: 64px;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .footer-logo span { color: var(--coral); }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    text-align: right;
+  }
+
+  .footer-links strong {
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .cover { height: auto; min-height: 0; page-break-after: always; }
+    .cover-bg { display: none; }
+    .day-body { display: block !important; }
+    .chevron { display: none; }
+    .scroll-hint { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .cover-content { padding: 32px 24px; }
+    .cover-title { font-size: 52px; }
+    .wrap { padding: 0 20px; }
+    .checklist-grid { grid-template-columns: 1fr; }
+    .info-strip .wrap { grid-template-columns: 1fr 1fr; }
+    .week-num { font-size: 56px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-links { text-align: left; }
+    .mosaic-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .mosaic-img:first-child { grid-row: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-bg" id="coverBg"></div>
+  <div class="cover-overlay"></div>
+  <div class="cover-content">
+    <div class="cover-eyebrow">Carnet de voyage • Juin 2026</div>
+    <h1 class="cover-title">
+      Île Maurice
+      <em>Deux semaines, deux gars, deux scooters</em>
+    </h1>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>15 – 29 juin</strong>14 jours</div>
+      <div class="cover-meta-item"><strong>Grand Baie</strong>Base • Nord</div>
+      <div class="cover-meta-item"><strong>3 000 €</strong>Budget total</div>
+      <div class="cover-meta-item"><strong>22 & 24 ans</strong>2 voyageurs</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="checklist-section">
+  <div class="wrap">
+    <div class="section-label">À ne pas manquer</div>
+    <h2 class="section-title">Les incontournables</h2>
+    <div class="checklist-grid">
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Plages de Péreybère & Trou-aux-Biches
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Terres des 7 Couleurs — Chamarel
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Black River Gorges — rando Macchabée
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Île aux Cerfs
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Blue Bay Marine Park — snorkeling
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Belle Mare — la plus belle plage
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Marché Central & Chinatown — Port Louis
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Catamaran + observation des dauphins
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Dholl puri au bord de la route (~1 €)
+      </div>
+      <div class="check-item must">
+        <div class="check-box"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        Coucher de soleil — Cap Malheureux
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        Rhum arrangé local
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        Massage créole
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        Kitesurf ou paddle
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        Jardin botanique de Pamplemousses
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<section class="info-strip">
+  <div class="wrap">
+    <div class="info-cell">
+      <div class="info-cell-label">Scooters</div>
+      <div class="info-cell-val">Dodo Ride · Grand Baie<br>+230 5925 6285 · ×2</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Base</div>
+      <div class="info-cell-val">Grand Baie, Rivière du Rempart<br>20 min à pied de Péreybère</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Météo juin</div>
+      <div class="info-cell-val">Saison sèche · 26–27 °C<br>Alizés réguliers · soleil</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Retour</div>
+      <div class="info-cell-val">29 juin · vol 10h<br>Départ logement à 7h</div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEKS -->
+<div class="wrap">
+
+  <!-- SEMAINE 1 -->
+  <div class="week-header">
+    <div class="week-header-inner">
+      <div class="week-num">01</div>
+      <div class="week-info">
+        <div class="week-label">Semaine</div>
+        <div class="week-title">15 → 21 juin</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="days-list" id="week1"></div>
+
+  <!-- MOSAIC -->
+  <div class="mosaic">
+    <div class="mosaic-grid">
+      <div class="mosaic-img">
+        <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=900&q=80" alt="Plage Maurice" loading="lazy">
+      </div>
+      <div class="mosaic-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Seven_Coloured_Earth_in_Chamarel.jpg/800px-Seven_Coloured_Earth_in_Chamarel.jpg" alt="Chamarel" loading="lazy">
+      </div>
+      <div class="mosaic-img">
+        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Snorkeling" loading="lazy">
+      </div>
+    </div>
+    <div class="mosaic-caption">Péreybère · Chamarel · Lagon mauricien</div>
+  </div>
+
+  <!-- SEMAINE 2 -->
+  <div class="week-header">
+    <div class="week-header-inner">
+      <div class="week-num">02</div>
+      <div class="week-info">
+        <div class="week-label">Semaine</div>
+        <div class="week-title">22 → 29 juin</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="days-list" id="week2"></div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">Île<span>.</span>Maurice</div>
+      <div class="footer-links">
+        <div><strong>Dodo Ride</strong> · +230 5925 6285</div>
+        <div><strong>Karaï Kreol</strong> · +230 5972 9101</div>
+        <div><strong>Totof Tours Blue Bay</strong> · +230 5836 9065</div>
+        <div style="margin-top:8px">Voyage 15 – 29 juin 2026</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const DAYS = [
+  {
+    n:1, date:"Lun 15 juin", title:"Arrivée & premier souffle", badge:"chill",
+    photo:"https://images.unsplash.com/photo-1589197331516-4d84b72ebde3?w=900&q=80",
+    photoAlt:"Péreybère beach",
+    acts:[
+      {time:"10h – arrivée", desc:"Atterrissage à SSR — transfert en taxi vers Grand Baie (~1h)"},
+      {time:"Dès 13h",       desc:"<strong>Louer les deux scooters</strong> — Dodo Ride à Grand Baie (⭐ 5.0 · 483 avis). Tarif 2 semaines : ~200–250 € chacun"},
+      {time:"Après-midi",   desc:"<strong>Plage de Péreybère</strong> — 20 min à pied. Eau turquoise, première baignade"},
+      {time:"Soir",          desc:"Balade Grand Baie · jus frais au <strong>La Kaza</strong> (ambiance swings, vue mer)"},
+    ],
+    tip:"Côté droit de la route ! Maurice roule à gauche, héritage britannique."
+  },
+  {
+    n:2, date:"Mar 16 juin", title:"Nord sauvage en scooter", badge:"charge",
+    photo:null,
+    acts:[
+      {time:"Matin",         desc:"<strong>Cap Malheureux</strong> — côte nord, vue sur l'île Coin de Mire et sa chapelle rouge"},
+      {time:"Matinée",       desc:"<strong>Baie aux Tortues</strong> (Balaclava) — snorkeling, tortues fréquentes en juin"},
+      {time:"Déjeuner",      desc:"Dholl puri sur la route (~1 €). L'incontournable mauricien"},
+      {time:"Après-midi",   desc:"<strong>Jardin botanique de Pamplemousses</strong> — nénuphars géants, baobabs. Entrée gratuite"},
+    ],
+    tip:"Retirer des roupies en local (DAB MCB). Les restos locaux ne prennent pas tous la carte."
+  },
+  {
+    n:3, date:"Mer 17 juin", title:"Plage & farniente", badge:"chill",
+    photo:"https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=900&q=80",
+    photoAlt:"Lagon turquoise Maurice",
+    acts:[
+      {time:"Matin",         desc:"<strong>Trou-aux-Biches</strong> — lagon protégé, parmi les plus belles plages du monde"},
+      {time:"Midi",          desc:"<strong>Karaï Kreol</strong> à Grand Baie (⭐ 5.0). Menu créole du jour ~10 €/pers"},
+      {time:"Après-midi",   desc:"Snorkeling libre à Péreybère"},
+      {time:"Soir",          desc:"Marché de Grand Baie — artisanat, épices, souvenirs locaux"},
+    ],
+    tip:null
+  },
+  {
+    n:4, date:"Jeu 18 juin", title:"Chamarel & Black River Gorges", badge:"incontournable",
+    photo:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Seven_Coloured_Earth_in_Chamarel.jpg/1280px-Seven_Coloured_Earth_in_Chamarel.jpg",
+    photoAlt:"Terres des 7 Couleurs Chamarel",
+    acts:[
+      {time:"Départ 7h30",   desc:"Route vers le Sud (~2h en scooter). Paysages de canne à sucre via la B103"},
+      {time:"Matinée",       desc:"<strong>Black River Gorges</strong> — randonnée Macchabée loop (2–3h, niveau facile). Vue époustouflante"},
+      {time:"Déjeuner",      desc:"Chamarel village — rougaille saucisse et riz local (~8 €)"},
+      {time:"Après-midi",   desc:"<strong>Terres des 7 Couleurs</strong> — dunes multicolores + chutes de Chamarel (~10 €)"},
+    ],
+    tip:"Journée la plus longue (~150 km A/R). Départ tôt = pas de bus touristiques."
+  },
+  {
+    n:5, date:"Ven 19 juin", title:"Repos & sports de glisse", badge:"chill",
+    photo:null,
+    acts:[
+      {time:"Matin",         desc:"<strong>Plage de Mon Choisy</strong> — grande plage ombragée, snorkeling libre"},
+      {time:"Après-midi",   desc:"<strong>Kitesurf ou paddle</strong> à louer sur place (~20 €/h). Vents alizés parfaits en juin"},
+      {time:"Soir",          desc:"<strong>Le DoDo LoCo</strong> — ambiance jardin, bonne cuisine créole"},
+    ],
+    tip:"Juin = alizés réguliers. Idéal pour les sports de glisse."
+  },
+  {
+    n:6, date:"Sam 20 juin", title:"Île aux Cerfs", badge:"incontournable",
+    photo:"https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=900&q=80",
+    photoAlt:"Île aux Cerfs Maurice",
+    acts:[
+      {time:"8h",            desc:"Route vers Mahébourg (côte est, ~1h30 en scooter) ou taxi ~20 €"},
+      {time:"9h30",          desc:"Ferry Pointe Maurice → <strong>Île aux Cerfs</strong> (~10 € A/R · chaise longue incluse)"},
+      {time:"Journée",       desc:"Plages cristallines, snorkeling, parachute ascensionnel (~50 €), tube ride"},
+      {time:"Déjeuner",      desc:"BBQ poisson sur l'île (~15–20 €) ou picnic"},
+    ],
+    tip:"Le dimanche est légèrement moins bondé que le samedi."
+  },
+  {
+    n:7, date:"Dim 21 juin", title:"Port Louis & culture", badge:"charge",
+    photo:"https://images.unsplash.com/photo-1568895335053-9a52a3cca4b3?w=900&q=80",
+    photoAlt:"Port Louis Maurice",
+    acts:[
+      {time:"Matin",         desc:"<strong>Marché Central</strong> de Port Louis — épices, safran pays, broderies. Mieux entre 8h–11h"},
+      {time:"Matinée",       desc:"<strong>Caudan Waterfront</strong> — balade, musée de la Monnaie (gratuit)"},
+      {time:"Déjeuner",      desc:"<strong>Chinatown</strong> — min frit, bol renversé ~5 €. Très authentique"},
+      {time:"Après-midi",   desc:"<strong>Citadelle Aime Gordon Bennett</strong> — fort colonial, vue panoramique. Gratuit"},
+    ],
+    tip:"Dimanche : Port Louis calme = idéal pour visiter."
+  },
+  {
+    n:8, date:"Lun 22 juin", title:"Belle Mare & côte Est", badge:"incontournable",
+    photo:"https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=900&q=80",
+    photoAlt:"Belle Mare plage Maurice",
+    acts:[
+      {time:"Matin tôt",     desc:"<strong>Belle Mare Plage</strong> — considérée comme la plus belle plage de Maurice. Arriver avant 9h"},
+      {time:"Matinée",       desc:"Snorkeling libre le long des 8 km de plage"},
+      {time:"Déjeuner",      desc:"Resto local à Mahébourg — grillades poissons ~12 €"},
+      {time:"Après-midi",   desc:"<strong>Musée Historique de Mahébourg</strong> — histoire coloniale. Gratuit"},
+    ],
+    tip:"Belle Mare le matin = lumière parfaite et plage quasi-déserte."
+  },
+  {
+    n:9, date:"Mar 23 juin", title:"Slow day", badge:"chill",
+    photo:null,
+    acts:[
+      {time:"Matinée",       desc:"Péreybère libre — <strong>paddleboard ou kayak</strong> (~15 €/h)"},
+      {time:"Après-midi",   desc:"<strong>Massage thaï ou créole</strong> — nombreux spas à Grand Baie (~25–40 €/h)"},
+      {time:"Soir",          desc:"Coucher de soleil depuis Cap Malheureux · street food"},
+    ],
+    tip:null
+  },
+  {
+    n:10, date:"Mer 24 juin", title:"Blue Bay Marine Park", badge:"incontournable",
+    photo:"https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=900&q=80",
+    photoAlt:"Snorkeling récif corallien",
+    acts:[
+      {time:"8h",            desc:"Route vers Blue Bay (sud-est, ~1h30). Parc marin classé UNESCO"},
+      {time:"Matin",         desc:"<strong>Snorkeling Blue Bay</strong> — meilleurs récifs de l'océan Indien. Totof Tours : 3h ~35 €/pers"},
+      {time:"Déjeuner",      desc:"Mahébourg market — dholl puri et jus de canne frais"},
+      {time:"Après-midi",   desc:"<strong>Île aux Aigrettes</strong> — tortues géantes, visite guidée conservation (~25 €)"},
+    ],
+    tip:"Île aux Aigrettes : réservation conseillée à l'avance."
+  },
+  {
+    n:11, date:"Jeu 25 juin", title:"Côte Ouest & chutes", badge:"charge",
+    photo:null,
+    acts:[
+      {time:"Matin",         desc:"<strong>Tamarin & La Preneuse</strong> — côte ouest. Surf à Tamarin (vagues modérées en juin)"},
+      {time:"Matinée",       desc:"<strong>Cascade 500 pieds</strong> (La Marie) — randonnée ~1h A/R en forêt tropicale"},
+      {time:"Déjeuner",      desc:"<strong>Flic en Flac</strong> — grande plage, poisson grillé face à la mer"},
+      {time:"Après-midi",   desc:"Baignade à Flic en Flac — lagon calme"},
+    ],
+    tip:null
+  },
+  {
+    n:12, date:"Ven 26 juin", title:"Journée libre & shopping", badge:"chill",
+    photo:null,
+    acts:[
+      {time:"Journée",       desc:"Shopping artisanat Grand Baie — épices, bijoux en coquillages, broderies"},
+      {time:"Après-midi",   desc:"Péreybère une dernière fois"},
+      {time:"Soir",          desc:"<strong>Grand dîner créole</strong> — Karaï Kreol ou coup de cœur de la semaine"},
+    ],
+    tip:"Ramener : thé Bois Chéri, vanille, épices créoles, souvenirs locaux."
+  },
+  {
+    n:13, date:"Sam 27 juin", title:"Catamaran tour Nord", badge:"charge",
+    photo:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&q=80",
+    photoAlt:"Catamaran Maurice",
+    acts:[
+      {time:"Journée",       desc:"<strong>Excursion catamaran</strong> depuis Grand Baie ~60 €/pers — Coin de Mire, BBQ, snorkeling"},
+      {time:"Après-midi",   desc:"Passage baie aux dauphins (côte de Tamarin) — observations fréquentes en juin"},
+      {time:"Soir",          desc:"Soirée de clôture — dîner créole face à la mer"},
+    ],
+    tip:"Réserver le catamaran à l'avance. Dauphins réguliers en juin côté ouest."
+  },
+  {
+    n:14, date:"Dim 28 juin", title:"Last day, chill total", badge:"chill",
+    photo:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80",
+    photoAlt:"Coucher de soleil plage",
+    acts:[
+      {time:"Matin",         desc:"Dernière baignade à <strong>Péreybère</strong>"},
+      {time:"Déjeuner",      desc:"Déjeuner d'adieu au coup de cœur de la semaine"},
+      {time:"Après-midi",   desc:"Bagages, achats derniers souvenirs"},
+      {time:"Soir",          desc:"<strong>Coucher de soleil depuis Cap Malheureux</strong> — le plus beau des 14 jours"},
+    ],
+    tip:"Vol le 29 juin à 10h — départ logement à 7h (taxi pré-réservé). SSR à 1h15 de Grand Baie."
+  },
+];
+
+function buildDays(containerId, dayList) {
+  const container = document.getElementById(containerId);
+  dayList.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'day-card';
+
+    const badgeLabels = {chill:'Chill', charge:'Chargée', incontournable:'Incontournable'};
+
+    card.innerHTML = `
+      <div class="day-header">
+        <div class="day-num-block"><span>${d.n}</span></div>
+        <div class="day-header-info">
+          <div class="day-date">${d.date}</div>
+          <div class="day-title">${d.title}</div>
+        </div>
+        <div class="day-badge-chevron">
+          <span class="badge badge-${d.badge}">${badgeLabels[d.badge]}</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 6l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="day-body">
+        ${d.photo
+          ? `<img class="day-photo" src="${d.photo}" alt="${d.photoAlt || ''}" loading="lazy" onerror="this.style.display='none'">`
+          : ''
+        }
+        <div class="activities">
+          ${d.acts.map(a => `
+            <div class="activity">
+              <div class="act-time">${a.time}</div>
+              <div class="act-desc">${a.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+        ${d.tip ? `<div class="day-tip">→ ${d.tip}</div>` : ''}
+      </div>
+    `;
+
+    card.querySelector('.day-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+
+    container.appendChild(card);
+  });
+}
+
+buildDays('week1', DAYS.slice(0, 7));
+buildDays('week2', DAYS.slice(7, 14));
+
+// Cover parallax
+const bg = document.getElementById('coverBg');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  bg.style.transform = `translateY(${y * 0.35}px) scale(1)`;
+}, { passive: true });
+bg.classList.add('loaded');
+</script>
+</body>
+</html>
